@@ -52,6 +52,27 @@ it('throws ValidationException on 422 and exposes Flip errors', function () {
     }
 });
 
+it('throws NotFoundException on 404', function () {
+    Http::fake([
+        flipUrl('v3/get-disbursement*') => Http::response([
+            'code' => 'disbursement_id_not_found',
+            'errors' => [
+                ['attribute' => 'id', 'code' => 1072, 'message' => 'Disbursement not found'],
+            ],
+        ], 404),
+    ]);
+
+    Flip::disbursement()->find('does-not-exist');
+})->throws(\Reefki\Flip\Exceptions\NotFoundException::class);
+
+it('wraps network failures in ConnectionException', function () {
+    Http::fake(function () {
+        throw new \Illuminate\Http\Client\ConnectionException('Connection refused');
+    });
+
+    Flip::balance()->get();
+})->throws(\Reefki\Flip\Exceptions\ConnectionException::class, 'Connection refused');
+
 it('throws MaintenanceException on 503', function () {
     Http::fake([
         flipUrl('v3/general/balance') => Http::response([
