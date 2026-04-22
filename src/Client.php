@@ -2,10 +2,12 @@
 
 namespace Reefki\Flip;
 
+use Illuminate\Http\Client\ConnectionException as HttpConnectionException;
 use Illuminate\Http\Client\Factory as HttpFactory;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\Response;
 use Reefki\Flip\Exceptions\AuthenticationException;
+use Reefki\Flip\Exceptions\ConnectionException;
 use Reefki\Flip\Exceptions\FlipException;
 use Reefki\Flip\Exceptions\MaintenanceException;
 use Reefki\Flip\Exceptions\NotFoundException;
@@ -88,6 +90,8 @@ class Client
      * @param  array<string, mixed>  $query  Query string parameters.
      * @param  array<string, string>  $headers  Additional request headers.
      * @return array<string, mixed>
+     *
+     * @throws \Reefki\Flip\Exceptions\FlipException
      */
     public function get(string $path, array $query = [], array $headers = []): array
     {
@@ -101,6 +105,8 @@ class Client
      * @param  array<string, mixed>  $body  Form fields.
      * @param  array<string, string>  $headers  Additional request headers.
      * @return array<string, mixed>
+     *
+     * @throws \Reefki\Flip\Exceptions\FlipException
      */
     public function postForm(string $path, array $body = [], array $headers = []): array
     {
@@ -114,6 +120,8 @@ class Client
      * @param  array<string, mixed>  $body  JSON-encodable payload.
      * @param  array<string, string>  $headers  Additional request headers.
      * @return array<string, mixed>
+     *
+     * @throws \Reefki\Flip\Exceptions\FlipException
      */
     public function postJson(string $path, array $body = [], array $headers = []): array
     {
@@ -127,6 +135,8 @@ class Client
      * @param  array<string, mixed>  $body  JSON-encodable payload.
      * @param  array<string, string>  $headers  Additional request headers.
      * @return array<string, mixed>
+     *
+     * @throws \Reefki\Flip\Exceptions\FlipException
      */
     public function putJson(string $path, array $body = [], array $headers = []): array
     {
@@ -201,21 +211,48 @@ class Client
             ));
         }
 
-        /** @var \Illuminate\Http\Client\Response $response */
-        $response = match ($method) {
-            'GET' => $request->get($url),
-            'POST' => $request->post($url, $body),
-            'PUT' => $request->put($url, $body),
-            default => $request->send($method, $url, ['form_params' => $body]),
-        };
+        try {
+            /** @var \Illuminate\Http\Client\Response $response */
+            $response = match ($method) {
+                'GET' => $request->get($url),
+                'POST' => $request->post($url, $body),
+                'PUT' => $request->put($url, $body),
+                default => $request->send($method, $url, ['form_params' => $body]),
+            };
+        } catch (HttpConnectionException $e) {
+            throw new ConnectionException($e->getMessage(), 0, $e);
+        }
 
         if ($response->successful()) {
-            $data = $response->json();
-
-            return is_array($data) ? $data : ['data' => $data];
+            return $this->decode($response);
         }
 
         throw $this->mapError($response);
+    }
+
+    /**
+     * Decode a successful response body using `JSON_BIGINT_AS_STRING` so
+     * Flip's 19-digit BigInteger transaction IDs (which can exceed PHP's
+     * int64 max) are preserved as strings instead of silently truncated.
+     *
+     * @param  \Illuminate\Http\Client\Response  $response
+     * @return array<string, mixed>
+     */
+    protected function decode(Response $response): array
+    {
+        $body = $response->body();
+
+        if ($body === '') {
+            return [];
+        }
+
+        $data = json_decode($body, true, 512, JSON_BIGINT_AS_STRING);
+
+        if (! is_array($data)) {
+            return ['data' => $data];
+        }
+
+        return $data;
     }
 
     /**
