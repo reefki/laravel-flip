@@ -205,10 +205,10 @@ class Client
 
         $url = '/' . ltrim($path, '/');
         if ($query !== []) {
-            $url .= '?' . http_build_query(array_filter(
-                $query,
-                static fn ($v) => $v !== null && $v !== ''
-            ));
+            // http_build_query already drops null values; leaves through `0`,
+            // `'0'`, `false`, and `''` as-is. Callers decide what's worth
+            // sending; we don't second-guess.
+            $url .= '?' . http_build_query($query);
         }
 
         try {
@@ -217,7 +217,6 @@ class Client
                 'GET' => $request->get($url),
                 'POST' => $request->post($url, $body),
                 'PUT' => $request->put($url, $body),
-                default => $request->send($method, $url, ['form_params' => $body]),
             };
         } catch (HttpConnectionException $e) {
             throw new ConnectionException($e->getMessage(), 0, $e);

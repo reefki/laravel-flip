@@ -84,3 +84,22 @@ it('throws MaintenanceException on 503', function () {
 
     Flip::balance()->get();
 })->throws(\Reefki\Flip\Exceptions\MaintenanceException::class);
+
+it('tolerates a non-JSON error response body (e.g. HTML from a gateway)', function () {
+    Http::fake([
+        flipUrl('v3/general/balance') => Http::response(
+            '<html><body>502 Bad Gateway</body></html>',
+            502,
+            ['Content-Type' => 'text/html'],
+        ),
+    ]);
+
+    try {
+        Flip::balance()->get();
+        $this->fail('Expected FlipException');
+    } catch (\Reefki\Flip\Exceptions\FlipException $e) {
+        expect($e->getMessage())->toBe('Flip API request failed')
+            ->and($e->getCode())->toBe(502)
+            ->and($e->payload())->toBe([]);
+    }
+});
