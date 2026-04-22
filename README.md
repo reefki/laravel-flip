@@ -11,12 +11,12 @@ Covers everything Flip publishes:
 
 - **General** — balance, supported banks, maintenance probe
 - **Disbursement** (v2 + v3) — money transfer, list, lookup by id / idempotency key, bank account inquiry, special money transfer (PJP)
-- **Reference data** — city, country, combined lists
-- **Accept Payment** (v3) — create / list / read / edit bill, list payments per bill, list all payments, settlement report
-- **International Disbursement** (v2) — exchange rates, form data, list, find, C2C/C2B + B2C/B2B create
+- **Reference data** (v2-only) — city, country, combined lists
+- **Accept Payment** (v3-only) — create / list / read / edit bill, list payments per bill, list all payments, settlement report
+- **International Disbursement** (v2-only) — exchange rates, form data, list, find, C2C/C2B + B2C/B2B create
 - **Webhook signature validation**
 
-Both v2 and v3 are first-class. Pick the default in config, override per call.
+Accept Payment v2 is deprecated; bill/payment/settlement-report resources are pinned to v3 and ignore `FLIP_VERSION`. Multi-version resources (disbursement, special disbursement) follow the configured default and can be overridden per call.
 
 ## Install
 
@@ -45,7 +45,7 @@ FLIP_VERSION=v3               # default API version: v2 or v3
 
 `config/flip.php` exposes everything (timeout, retries, base URLs).
 
-> The default version applies to endpoints that exist on both v2 and v3 (disbursement, accept-payment). A few endpoints are pinned to a specific version because Flip only ships them there: bank account inquiry, city/country lists, exchange rates, and the international transfer family are v2-only. Those resources ignore the default — see "Versioning" below.
+> The default version applies to the disbursement family (money transfer, special money transfer). Everything else is pinned because Flip only ships each endpoint on one version: bank account inquiry, city/country lists, exchange rates and the international transfer family are v2-only; accept payment (bill, payment listing, settlement report) is v3-only. Pinned resources ignore the config default — see "Versioning" below.
 
 ## Quickstart
 
@@ -208,7 +208,9 @@ Flip ships some endpoints on both v2 and v3, others on only one. The package han
 - **Configurable default**: `config('flip.version')` (default `v3`) applies to all multi-version resources.
 - **Per-call override**: `Flip::disbursement()->withVersion('v2')->list()` returns a clone with the version forced.
 - **Global override**: `Flip::useVersion('v2')->disbursement()->list()` for a one-off facade chain.
-- **Pinned endpoints**: bank account inquiry, city/country lists, exchange rates, form data, and every international-disbursement endpoint are pinned to v2 because Flip does not publish v3 versions. They ignore the default and the override.
+- **Pinned endpoints**: these endpoints ignore the configured default:
+  - **v2-only** (Flip does not publish v3): bank account inquiry, city/country lists, exchange rates, form data, every international-disbursement endpoint.
+  - **v3-only** (v2 is deprecated): accept-payment bills, payment listings, settlement report.
 
 ```php
 // Force a v2 disbursement create even if FLIP_VERSION=v3
@@ -268,6 +270,13 @@ Flip's documented error responses map to typed exceptions:
 | Network / DNS    | `Reefki\Flip\Exceptions\ConnectionException`           |
 | ★ any other      | `Reefki\Flip\Exceptions\FlipException` (base class)    |
 
+Webhook verification raises its own pair:
+
+| Cause                                             | Exception                                                    |
+|---------------------------------------------------|--------------------------------------------------------------|
+| Validation token mismatch                         | `Reefki\Flip\Exceptions\InvalidWebhookSignatureException`    |
+| Signature OK but `data` field isn't valid JSON    | `Reefki\Flip\Exceptions\MalformedWebhookPayloadException`    |
+
 All inherit from `FlipException`, which exposes the response body and Flip's `errors[]` array:
 
 ```php
@@ -308,7 +317,7 @@ composer install
 vendor/bin/pest
 ```
 
-46 tests covering every resource, both versions, error mapping, and webhook signature validation.
+Pest covers every resource, both versions, error mapping, and webhook signature validation.
 
 ## License
 
