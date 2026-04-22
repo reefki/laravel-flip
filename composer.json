@@ -4,6 +4,10 @@
     "keywords": ["laravel", "flip", "flip.id", "disbursement", "payment", "indonesia", "remittance"],
     "license": "MIT",
     "type": "library",
+    "support": {
+        "issues": "https://github.com/reefki/laravel-flip/issues",
+        "source": "https://github.com/reefki/laravel-flip"
+    },
     "require": {
         "php": "^8.1",
         "guzzlehttp/guzzle": "^7.5",
