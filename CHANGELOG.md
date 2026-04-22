@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-04-23
+
 ### Changed
 
 - **Minimum PHP version bumped from 8.1 to 8.2.** The 8.1 constraint advertised by 0.3.0 was never installable: `pestphp/pest` and `phpunit/phpunit` both require 8.2+ in their currently-maintained branches, so `composer install` failed on CI for that cell. PHP 8.1 reached end-of-life in November 2025.
@@ -74,7 +76,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Typed exceptions: `AuthenticationException`, `NotFoundException`, `ValidationException`, `MaintenanceException`, `InvalidWebhookSignatureException` (all extend `FlipException`).
 - 46 Pest tests, 70 assertions.
 
-[Unreleased]: https://github.com/reefki/laravel-flip/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/reefki/laravel-flip/compare/v0.4.0...HEAD
+[0.4.0]: https://github.com/reefki/laravel-flip/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/reefki/laravel-flip/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/reefki/laravel-flip/compare/v0.1.1...v0.2.0
 [0.1.1]: https://github.com/reefki/laravel-flip/compare/v0.1.0...v0.1.1
