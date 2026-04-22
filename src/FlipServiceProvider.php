@@ -40,14 +40,4 @@ class FlipServiceProvider extends ServiceProvider
             ], 'flip-config');
         }
     }
-
-    /**
-     * Container bindings provided by this service provider (deferred).
-     *
-     * @return array<int, string>
-     */
-    public function provides(): array
-    {
-        return ['flip', Flip::class, Client::class];
-    }
 }
