@@ -51,3 +51,31 @@ it('does not mutate the singleton when using useVersion()', function () {
     Http::assertSent(fn ($r) => str_contains($r->url(), '/v2/general/balance'));
     Http::assertSent(fn ($r) => str_contains($r->url(), '/v3/general/balance'));
 });
+
+it('pins accept-payment bills/payments/settlement-report to v3 even when default is v2', function () {
+    config()->set('flip.version', 'v2');
+    app()->forgetInstance(\Reefki\Flip\Client::class);
+    app()->forgetInstance('flip');
+
+    Http::fake([
+        flipUrl('v3/pwf/bill') => Http::response(['link_id' => 1], 200),
+        flipUrl('v3/pwf/abc/bill') => Http::response(['link_id' => 1], 200),
+        flipUrl('v3/pwf/abc/payment*') => Http::response([], 200),
+        flipUrl('v3/pwf/payment*') => Http::response([], 200),
+        flipUrl('v3/settlement-report/generate') => Http::response(['request_id' => 'r'], 200),
+        flipUrl('v3/settlement/settlement-report/check-status*') => Http::response(['status' => 'PROCESSING'], 200),
+    ]);
+
+    Flip::bill()->create(['title' => 'x', 'type' => 'SINGLE', 'expired_date' => '2026-01-01 00:00', 'step' => 'checkout']);
+    Flip::bill()->list();
+    Flip::bill()->find('abc');
+    Flip::bill()->update('abc', ['status' => 'INACTIVE']);
+    Flip::payment()->forBill('abc');
+    Flip::payment()->list();
+    Flip::settlementReport()->generate('2026-01-01', '2026-01-02');
+    Flip::settlementReport()->checkStatus('r');
+
+    Http::assertSentCount(8);
+    Http::assertNotSent(fn ($r) => str_contains($r->url(), '/v2/pwf/'));
+    Http::assertNotSent(fn ($r) => str_contains($r->url(), '/v2/settlement'));
+});
