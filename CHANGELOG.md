@@ -6,6 +6,26 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-04-23
+
+### Added
+
+- `ConnectionException` (extends `FlipException`) wrapping network/timeout failures so users only need to catch one exception family.
+- `NotFoundException` test coverage.
+- `Banks::find()` test for the `BANK_NOT_FOUND` path.
+- Test for 19-digit BigInteger IDs returning as strings.
+- `support.issues` and `support.source` URLs in `composer.json` (surface on Packagist).
+
+### Changed
+
+- Successful JSON responses are now decoded with `JSON_BIGINT_AS_STRING`. Flip's 19-digit transaction IDs that overflow PHP int64 are preserved as strings instead of silently truncated to floats.
+- `Banks::find()` now returns `null` when Flip reports `BANK_NOT_FOUND` instead of throwing `ValidationException`. Previous behavior never matched the documented `?array` return type.
+- Dynamic path segments (`Bill::find/update`, `Payment::forBill`, `InternationalDisbursement::find`) are URL-encoded with `rawurlencode()`.
+
+### Removed
+
+- `FlipServiceProvider::provides()` — was dead code (only consulted on `DeferrableProvider`, which the package isn't).
+
 ## [0.1.1] - 2026-04-23
 
 ### Added
@@ -32,6 +52,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Typed exceptions: `AuthenticationException`, `NotFoundException`, `ValidationException`, `MaintenanceException`, `InvalidWebhookSignatureException` (all extend `FlipException`).
 - 46 Pest tests, 70 assertions.
 
-[Unreleased]: https://github.com/reefki/laravel-flip/compare/v0.1.1...HEAD
+[Unreleased]: https://github.com/reefki/laravel-flip/compare/v0.2.0...HEAD
+[0.2.0]: https://github.com/reefki/laravel-flip/compare/v0.1.1...v0.2.0
 [0.1.1]: https://github.com/reefki/laravel-flip/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/reefki/laravel-flip/releases/tag/v0.1.0
