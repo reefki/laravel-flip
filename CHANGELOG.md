@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-04-23
+
+### Added
+
+- GitHub Actions test matrix (PHP 8.2/8.3/8.4 × Laravel 10/11/12).
+- README badges (Packagist version, downloads, CI status, license).
+- `CHANGELOG.md` following Keep a Changelog.
+
 ## [0.1.0] - 2026-04-23
 
 ### Added
@@ -24,5 +32,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Typed exceptions: `AuthenticationException`, `NotFoundException`, `ValidationException`, `MaintenanceException`, `InvalidWebhookSignatureException` (all extend `FlipException`).
 - 46 Pest tests, 70 assertions.
 
-[Unreleased]: https://github.com/reefki/laravel-flip/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/reefki/laravel-flip/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/reefki/laravel-flip/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/reefki/laravel-flip/releases/tag/v0.1.0
