@@ -62,7 +62,9 @@ class InternationalDisbursement extends Resource
      */
     public function find(string|int $transactionId): array
     {
-        return $this->client->get($this->path("international-disbursement/{$transactionId}", 'v2'));
+        $id = rawurlencode((string) $transactionId);
+
+        return $this->client->get($this->path("international-disbursement/{$id}", 'v2'));
     }
 
     /**

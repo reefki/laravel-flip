@@ -43,7 +43,9 @@ class Bill extends Resource
      */
     public function find(string|int $billId): array
     {
-        return $this->client->get($this->path("pwf/{$billId}/bill"));
+        $id = rawurlencode((string) $billId);
+
+        return $this->client->get($this->path("pwf/{$id}/bill"));
     }
 
     /**
@@ -58,6 +60,8 @@ class Bill extends Resource
      */
     public function update(string|int $billId, array $payload): array
     {
-        return $this->client->putJson($this->path("pwf/{$billId}/bill"), $this->compact($payload));
+        $id = rawurlencode((string) $billId);
+
+        return $this->client->putJson($this->path("pwf/{$id}/bill"), $this->compact($payload));
     }
 }

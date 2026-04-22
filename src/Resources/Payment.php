@@ -16,7 +16,9 @@ class Payment extends Resource
      */
     public function forBill(string|int $billId, array $filters = []): array
     {
-        return $this->client->get($this->path("pwf/{$billId}/payment"), $filters);
+        $id = rawurlencode((string) $billId);
+
+        return $this->client->get($this->path("pwf/{$id}/payment"), $filters);
     }
 
     /**
