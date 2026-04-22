@@ -259,13 +259,14 @@ if (Flip::webhook()->isValid($request->input('token'))) {
 
 Flip's documented error responses map to typed exceptions:
 
-| HTTP | Exception                                              |
-|------|--------------------------------------------------------|
-| 401  | `Reefki\Flip\Exceptions\AuthenticationException`       |
-| 404  | `Reefki\Flip\Exceptions\NotFoundException`             |
-| 422  | `Reefki\Flip\Exceptions\ValidationException`           |
-| 503  | `Reefki\Flip\Exceptions\MaintenanceException`          |
-| ★    | `Reefki\Flip\Exceptions\FlipException` (base class)    |
+| HTTP / Cause     | Exception                                              |
+|------------------|--------------------------------------------------------|
+| 401              | `Reefki\Flip\Exceptions\AuthenticationException`       |
+| 404              | `Reefki\Flip\Exceptions\NotFoundException`             |
+| 422              | `Reefki\Flip\Exceptions\ValidationException`           |
+| 503              | `Reefki\Flip\Exceptions\MaintenanceException`          |
+| Network / DNS    | `Reefki\Flip\Exceptions\ConnectionException`           |
+| ★ any other      | `Reefki\Flip\Exceptions\FlipException` (base class)    |
 
 All inherit from `FlipException`, which exposes the response body and Flip's `errors[]` array:
 
