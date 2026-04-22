@@ -1,5 +1,10 @@
 # Laravel Flip
 
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/reefki/laravel-flip.svg?style=flat-square)](https://packagist.org/packages/reefki/laravel-flip)
+[![Tests](https://img.shields.io/github/actions/workflow/status/reefki/laravel-flip/tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/reefki/laravel-flip/actions/workflows/tests.yml)
+[![Total Downloads](https://img.shields.io/packagist/dt/reefki/laravel-flip.svg?style=flat-square)](https://packagist.org/packages/reefki/laravel-flip)
+[![License](https://img.shields.io/packagist/l/reefki/laravel-flip.svg?style=flat-square)](LICENSE)
+
 A fluent, fully-tested Laravel SDK for the [Flip for Business](https://docs.flip.id/docs/api/flip-for-business-api-documentation) payment API.
 
 Covers everything Flip publishes:
