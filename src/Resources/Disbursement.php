@@ -20,6 +20,8 @@ class Disbursement extends Resource
      * @param  string  $idempotencyKey  Required `idempotency-key` header value.
      * @param  string|null  $timestamp  Optional ISO 8601 `X-TIMESTAMP` header value.
      * @return array<string, mixed>
+     *
+     * @throws \Reefki\Flip\Exceptions\FlipException
      */
     public function create(array $payload, string $idempotencyKey, ?string $timestamp = null): array
     {
@@ -39,6 +41,8 @@ class Disbursement extends Resource
      *     amount, status, timestamp, bank_code, recipient_name, remark,
      *     time_served, created_form, direction.
      * @return array<string, mixed>
+     *
+     * @throws \Reefki\Flip\Exceptions\FlipException
      */
     public function list(array $filters = []): array
     {
@@ -52,6 +56,8 @@ class Disbursement extends Resource
      *
      * @param  string|int  $id  Flip's transaction id.
      * @return array<string, mixed>
+     *
+     * @throws \Reefki\Flip\Exceptions\FlipException
      */
     public function find(string|int $id): array
     {
@@ -65,6 +71,8 @@ class Disbursement extends Resource
      *
      * @param  string  $key  Idempotency key originally supplied to `create()`.
      * @return array<string, mixed>
+     *
+     * @throws \Reefki\Flip\Exceptions\FlipException
      */
     public function findByIdempotencyKey(string $key): array
     {
@@ -84,6 +92,8 @@ class Disbursement extends Resource
      * @param  string  $bankCode  Flip bank code.
      * @param  string|null  $inquiryKey  Optional alphanumeric key for matching async callbacks.
      * @return array<string, mixed>
+     *
+     * @throws \Reefki\Flip\Exceptions\FlipException
      */
     public function inquiry(string $accountNumber, string $bankCode, ?string $inquiryKey = null): array
     {

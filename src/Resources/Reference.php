@@ -12,6 +12,8 @@ class Reference extends Resource
      * Endpoint: `GET /v2/disbursement/city-list`.
      *
      * @return array<string, string>
+     *
+     * @throws \Reefki\Flip\Exceptions\FlipException
      */
     public function cities(): array
     {
@@ -26,6 +28,8 @@ class Reference extends Resource
      * Endpoint: `GET /v2/disbursement/country-list`.
      *
      * @return array<string, string>
+     *
+     * @throws \Reefki\Flip\Exceptions\FlipException
      */
     public function countries(): array
     {
@@ -40,6 +44,8 @@ class Reference extends Resource
      * Endpoint: `GET /v2/disbursement/city-country-list`.
      *
      * @return array<string, string>
+     *
+     * @throws \Reefki\Flip\Exceptions\FlipException
      */
     public function citiesAndCountries(): array
     {

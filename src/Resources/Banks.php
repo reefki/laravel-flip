@@ -27,6 +27,8 @@ class Banks extends Resource
      *
      * @param  string  $code  Bank code (e.g. `bca`).
      * @return array{bank_code:string,name:string,fee:int,queue:int,status:string}|null
+     *
+     * @throws \Reefki\Flip\Exceptions\FlipException
      */
     public function find(string $code): ?array
     {

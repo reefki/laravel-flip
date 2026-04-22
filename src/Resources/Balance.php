@@ -10,6 +10,8 @@ class Balance extends Resource
      * Endpoint: `GET /{version}/general/balance`.
      *
      * @return array{balance:int}
+     *
+     * @throws \Reefki\Flip\Exceptions\FlipException
      */
     public function get(): array
     {

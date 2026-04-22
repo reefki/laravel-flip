@@ -31,6 +31,8 @@ class SpecialDisbursement extends Resource
      * @param  string  $idempotencyKey  Required `idempotency-key` header value.
      * @param  string|null  $timestamp  Optional ISO 8601 `X-TIMESTAMP` header value.
      * @return array<string, mixed>
+     *
+     * @throws \Reefki\Flip\Exceptions\FlipException
      */
     public function create(array $payload, string $idempotencyKey, ?string $timestamp = null): array
     {

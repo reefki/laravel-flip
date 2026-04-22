@@ -15,6 +15,8 @@ class InternationalDisbursement extends Resource
      * @param  string  $transactionType  One of `C2C`, `C2B`, `B2B`, `B2C`.
      * @param  string|null  $countryIsoCode  ISO 3166 alpha-3 code, comma-separated for multiple.
      * @return array<string, mixed>
+     *
+     * @throws \Reefki\Flip\Exceptions\FlipException
      */
     public function exchangeRates(string $transactionType, ?string $countryIsoCode = null): array
     {
@@ -38,6 +40,8 @@ class InternationalDisbursement extends Resource
      * @param  string  $transactionType  One of `C2C`, `C2B`, `B2B`, `B2C`.
      * @param  string|null  $countryIsoCode  ISO 3166 alpha-3 code, comma-separated for multiple.
      * @return array<string, mixed>
+     *
+     * @throws \Reefki\Flip\Exceptions\FlipException
      */
     public function formData(string $transactionType, ?string $countryIsoCode = null): array
     {
@@ -59,6 +63,8 @@ class InternationalDisbursement extends Resource
      *
      * @param  string|int  $transactionId  Flip's transaction id.
      * @return array<string, mixed>
+     *
+     * @throws \Reefki\Flip\Exceptions\FlipException
      */
     public function find(string|int $transactionId): array
     {
@@ -76,6 +82,8 @@ class InternationalDisbursement extends Resource
      *
      * @param  array<string, scalar|null>  $filters  Any of: pagination, page, sort_by, ...
      * @return array<string, mixed>
+     *
+     * @throws \Reefki\Flip\Exceptions\FlipException
      */
     public function list(array $filters = []): array
     {
@@ -93,6 +101,8 @@ class InternationalDisbursement extends Resource
      * @param  string  $idempotencyKey  Required `idempotency-key` header value.
      * @param  string|null  $timestamp  Optional ISO 8601 `X-TIMESTAMP` header value.
      * @return array<string, mixed>
+     *
+     * @throws \Reefki\Flip\Exceptions\FlipException
      */
     public function createConsumer(array $payload, string $idempotencyKey, ?string $timestamp = null): array
     {
@@ -114,6 +124,8 @@ class InternationalDisbursement extends Resource
      * @param  string  $idempotencyKey  Required `idempotency-key` header value.
      * @param  string|null  $timestamp  Optional ISO 8601 `X-TIMESTAMP` header value.
      * @return array<string, mixed>
+     *
+     * @throws \Reefki\Flip\Exceptions\FlipException
      */
     public function createBusiness(array $payload, string $idempotencyKey, ?string $timestamp = null): array
     {

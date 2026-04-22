@@ -12,6 +12,8 @@ class Maintenance extends Resource
      * Endpoint: `GET /{version}/general/maintenance`.
      *
      * @return array{maintenance:bool}
+     *
+     * @throws \Reefki\Flip\Exceptions\FlipException
      */
     public function check(): array
     {
@@ -22,6 +24,8 @@ class Maintenance extends Resource
      * Boolean shortcut for the maintenance flag.
      *
      * @return bool
+     *
+     * @throws \Reefki\Flip\Exceptions\FlipException
      */
     public function isUnderMaintenance(): bool
     {
