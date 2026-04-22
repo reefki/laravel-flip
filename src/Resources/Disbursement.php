@@ -39,7 +39,7 @@ class Disbursement extends Resource
      *
      * @param  array<string, scalar|null>  $filters  Any of: pagination, page, sort, id,
      *     amount, status, timestamp, bank_code, recipient_name, remark,
-     *     time_served, created_form, direction.
+     *     time_served, created_from, direction.
      * @return array<string, mixed>
      *
      * @throws \Reefki\Flip\Exceptions\FlipException
