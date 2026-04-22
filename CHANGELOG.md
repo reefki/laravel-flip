@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-04-23
+
 ### Added
 
 - `MalformedWebhookPayloadException` raised by `SignatureValidator::verify()` when the token matches but the `data` field is not valid JSON. Previously this threw `InvalidWebhookSignatureException`, which misreported a data-integrity failure as a signature failure.
@@ -69,7 +71,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Typed exceptions: `AuthenticationException`, `NotFoundException`, `ValidationException`, `MaintenanceException`, `InvalidWebhookSignatureException` (all extend `FlipException`).
 - 46 Pest tests, 70 assertions.
 
-[Unreleased]: https://github.com/reefki/laravel-flip/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/reefki/laravel-flip/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/reefki/laravel-flip/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/reefki/laravel-flip/compare/v0.1.1...v0.2.0
 [0.1.1]: https://github.com/reefki/laravel-flip/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/reefki/laravel-flip/releases/tag/v0.1.0
