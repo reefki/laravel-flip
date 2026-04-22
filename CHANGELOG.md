@@ -6,12 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+### Changed
+
+- **Minimum PHP version bumped from 8.1 to 8.2.** The 8.1 constraint advertised by 0.3.0 was never installable: `pestphp/pest` and `phpunit/phpunit` both require 8.2+ in their currently-maintained branches, so `composer install` failed on CI for that cell. PHP 8.1 reached end-of-life in November 2025.
+
 ## [0.3.0] - 2026-04-23
 
 ### Added
 
 - `MalformedWebhookPayloadException` raised by `SignatureValidator::verify()` when the token matches but the `data` field is not valid JSON. Previously this threw `InvalidWebhookSignatureException`, which misreported a data-integrity failure as a signature failure.
-- PHP 8.1 coverage in the CI matrix (paired with Laravel 10.* only; 11/12 require PHP >=8.2).
 - Regression tests for non-JSON error response bodies and for the new webhook exception.
 
 ### Changed
