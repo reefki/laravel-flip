@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Reefki\Flip\Exceptions\InvalidWebhookSignatureException;
+use Reefki\Flip\Exceptions\MalformedWebhookPayloadException;
 use Reefki\Flip\Facades\Flip;
 
 it('accepts a callback whose token matches the configured value', function () {
@@ -32,14 +33,22 @@ it('throws when the request token is wrong', function () {
     Flip::webhook()->verify($request);
 })->throws(InvalidWebhookSignatureException::class);
 
-it('throws when data is not valid JSON', function () {
+it('throws MalformedWebhookPayloadException when signature is valid but data is not JSON', function () {
     $request = Request::create('/callback', 'POST', [
         'token' => 'test-validation-token',
         'data' => 'not-json',
     ]);
 
     Flip::webhook()->verify($request);
-})->throws(InvalidWebhookSignatureException::class);
+})->throws(MalformedWebhookPayloadException::class);
+
+it('validates a request through isValidRequest() directly', function () {
+    $good = Request::create('/callback', 'POST', ['token' => 'test-validation-token']);
+    $bad = Request::create('/callback', 'POST', ['token' => 'nope']);
+
+    expect(Flip::webhook()->isValidRequest($good))->toBeTrue()
+        ->and(Flip::webhook()->isValidRequest($bad))->toBeFalse();
+});
 
 it('rejects callbacks when no validation token is configured', function () {
     config()->set('flip.validation_token', '');

@@ -4,6 +4,7 @@ namespace Reefki\Flip\Webhook;
 
 use Illuminate\Http\Request;
 use Reefki\Flip\Exceptions\InvalidWebhookSignatureException;
+use Reefki\Flip\Exceptions\MalformedWebhookPayloadException;
 
 class SignatureValidator
 {
@@ -54,10 +55,15 @@ class SignatureValidator
     /**
      * Verify the request signature and return the decoded `data` payload.
      *
+     * Throws `InvalidWebhookSignatureException` when the token does not match,
+     * and `MalformedWebhookPayloadException` when the signature is valid but
+     * the `data` field is not a JSON object.
+     *
      * @param  \Illuminate\Http\Request  $request  Inbound webhook request.
      * @return array<string, mixed>
      *
      * @throws \Reefki\Flip\Exceptions\InvalidWebhookSignatureException
+     * @throws \Reefki\Flip\Exceptions\MalformedWebhookPayloadException
      */
     public function verify(Request $request): array
     {
@@ -69,7 +75,7 @@ class SignatureValidator
         $decoded = json_decode($raw, true);
 
         if (! is_array($decoded)) {
-            throw new InvalidWebhookSignatureException('Flip webhook `data` field is not valid JSON.');
+            throw new MalformedWebhookPayloadException('Flip webhook `data` field is not valid JSON.');
         }
 
         return $decoded;
