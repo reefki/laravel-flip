@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-04-23
+
+### Added
+
+- Laravel 13 support. `illuminate/contracts`, `illuminate/http`, and `illuminate/support` now accept `^13.0` alongside `^10.0|^11.0|^12.0`; CI matrix extended with Laravel 13 / testbench 11 (PHP 8.3+, since `pestphp/pest-plugin-laravel` v4 — the first release to support Laravel 13 — requires PHP 8.3+).
+
+### Changed
+
+- Dev dependencies widened to allow installing on Laravel 13: `pestphp/pest` and `pestphp/pest-plugin-laravel` accept `^4.0`; `phpunit/phpunit` accepts `^12.0`; `orchestra/testbench` accepts `^11.0`.
+
 ## [0.4.0] - 2026-04-23
 
 ### Changed
@@ -76,7 +86,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 - Typed exceptions: `AuthenticationException`, `NotFoundException`, `ValidationException`, `MaintenanceException`, `InvalidWebhookSignatureException` (all extend `FlipException`).
 - 46 Pest tests, 70 assertions.
 
-[Unreleased]: https://github.com/reefki/laravel-flip/compare/v0.4.0...HEAD
+[Unreleased]: https://github.com/reefki/laravel-flip/compare/v0.5.0...HEAD
+[0.5.0]: https://github.com/reefki/laravel-flip/compare/v0.4.0...v0.5.0
 [0.4.0]: https://github.com/reefki/laravel-flip/compare/v0.3.0...v0.4.0
 [0.3.0]: https://github.com/reefki/laravel-flip/compare/v0.2.0...v0.3.0
 [0.2.0]: https://github.com/reefki/laravel-flip/compare/v0.1.1...v0.2.0
